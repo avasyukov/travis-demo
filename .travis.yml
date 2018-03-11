@@ -1,3 +1,3 @@
 language: cpp
 script: make all && make run-tests
-install: boost-test
+install: sudo apt-get install boost-test -y
