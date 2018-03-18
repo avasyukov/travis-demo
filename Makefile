@@ -1,15 +1,23 @@
-all: compile
-	g++ main.o dice.o -o main
+CC=g++
+CFLAGS=-c -Wall
+LDFLAGS=-lboost_unit_test_framework
 
-compile:
-	g++ -c *.cpp
+SOURCES=dice.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
 
-tests: compile
-	g++ -c tests.cpp
-	g++ tests.o dice.o -lboost_unit_test_framework -o tests
+all: app tests
+
+app: $(OBJECTS) main.o
+	$(CC) $(LDFLAGS) $(OBJECTS) main.o -o $@
+
+tests: $(OBJECTS) tests.o
+	$(CC) $(LDFLAGS) $(OBJECTS) tests.o -o $@
 
 run-tests: tests
 	./tests
 
+.cpp.o:
+	$(CC) $(CFLAGS) $<
+
 clean:
-	rm -f *.o main tests
+	rm -f *.o tests app
